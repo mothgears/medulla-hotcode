@@ -58,7 +58,7 @@ const myProxy = module_exports=>{
     };
 
     module_exports.onRequest = (request, response)=>{
-        return {target:"pizzafab.oms-artem.loc", isPage:testPage(request.url)};
+        return {target:"myapp.loc", isPage:testPage(request.url)};
     };
 };
 
