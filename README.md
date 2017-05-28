@@ -1,28 +1,28 @@
 # Medulla-hotcode
-`medulla-hotcode` is a [medulla](https://www.npmjs.com/package/medulla) server plugin for hot reload page, scripts and styles.
-Also, you may using it with apache / nginx or other third-party, just set medulla as proxy.
+`medulla-hotcode` is a [medulla](https://www.npmjs.com/package/medulla) server plugin for hot reload pages, scripts and styles.
+Also, you may using it with apache / nginx or other third-party servers, just set medulla as proxy.
 
 ## Installation
 As [npm](https://www.npmjs.com/package/medulla-hotcode) package  
 `npm i -S medulla-hotcode`
 
 ## Usage
-Create and configure a medulla server app.
+Create and configure a [medulla server](https://www.npmjs.com/package/medulla) app.
 
-Include plugin
+Include plugin:
 ```es6
 require('medulla')({
     serverApp : "./myApp.js",
     devMode: true, //or use -dev parameter on launch
     devPlugins : {
-        'medulla-hotcode': {autoreload:0}
+        'medulla-hotcode': {autoreload: 0}
     }
 });
 ```
 - `autoreload: 0`  
 Period in ms between last "lazy reload" file change and automatically page refreshing. If set as '0', then page refresh after "lazy reload" only when cursor will be moved in browser window or if "force reload" file will be changed.
 
-Set reload param to files/templates from fileIndex
+Set reload param to files/templates from `watchedFiles`
 ```es6
 module.exports.watchedFiles = {
     "styles/main.css"   : {reload:"hot", type:"cached"}, //hot reload
@@ -53,7 +53,7 @@ const myProxy = module_exports=>{
     };
 
     //for detecting pages
-    let testPage = url=>{
+    const testPage = url=>{
         return request.url === '/' || url.endsWith('.html');
     };
 
@@ -67,11 +67,11 @@ require('medulla')({
     serverApp: myProxy,
     devMode: true,
     platforms: {
-        "win32": {"forcewatch":false},
-        "linux": {"forcewatch":true}
+        "win32": {forcewatch: false},
+        "linux": {forcewatch: true}
     },
     devPlugins: {
-        "medulla-hotcode": {"autoreload": 0}
+        "medulla-hotcode": {autoreload: 0}
     }
 });
 ```
