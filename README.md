@@ -54,7 +54,7 @@ const myProxy = module_exports=>{
 
     //for detecting pages
     const testPage = url=>{
-        return request.url === '/' || url.endsWith('.html');
+        return url === '/' || url.endsWith('.html');
     };
 
     module_exports.onRequest = (request, response)=>{
