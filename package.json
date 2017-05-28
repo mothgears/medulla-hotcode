@@ -1,6 +1,6 @@
 {
   "name": "medulla-hotcode",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "medulla plugin for auto reload pages, styles and scripts",
   "main": "index.es6",
   "dependencies": {
