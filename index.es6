@@ -41,7 +41,6 @@
 
 			ws.on('message', msg=>{
 				if (msg === 'MEDSIG_RESTART') {
-					//Do asks to restart the server
 					if (restart) restart(()=>{
 						let cids = Object.keys(medulla.wsClients);
 						for (let id of cids) medulla.wsClients[id].send('MEDSIG_REFRESH');
@@ -61,9 +60,9 @@
 	//CLIENT
 	//------------------------------------------------------------------------------------------------------------------
 	else if (typeof window === 'object' && window) {
-		let serverChanged = false,
+		let serverChanged   = false,
 			serverCorrupted = false,
-			autoReloadT   = null;
+			autoReloadT     = null;
 
 		const
 			AUTORELOAD = window.medulla.settings.autoreload || 0,
@@ -81,6 +80,19 @@
 
 		//FUNCTIONS
 		const escapeHtml = str=>str.replace(/[&<>"'`=\/]/g, s=>HTMLMAP[s]);
+		const sendMessage = (msg, wait = 50)=>{
+			if (window.medulla.ws.readyState === 1) {
+				window.medulla.ws.send(msg);
+			} else if (wait >= 0) {
+				console.log('wait connection...');
+				wait--;
+				setTimeout(sendMessage, 100, msg, wait);
+			}
+		};
+		const restartServer = ()=>{
+			sendMessage('MEDSIG_RESTART');
+			serverChanged = false;
+		};
 
 		errbox.style.width = '100%';
 		errbox.style.height = '100%';
@@ -100,21 +112,6 @@
 			document.body.appendChild(errbox);
 			sendMessage('MEDSIG_PAGELOADED');
 		});
-
-		const sendMessage = (msg, wait = 50)=>{
-			if (window.medulla.ws.readyState === 1) {
-				window.medulla.ws.send(msg);
-			} else if (wait >= 0) {
-				console.log('wait connection...');
-				wait--;
-				setTimeout(sendMessage, 100, msg, wait);
-			}
-		};
-
-		const restartServer = ()=>{
-			sendMessage('MEDSIG_RESTART');
-			serverChanged = false;
-		};
 
 		window.medulla.ws.addEventListener('message', event=>{
 			let msg = event.data;

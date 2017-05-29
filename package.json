@@ -1,6 +1,6 @@
 {
   "name": "medulla-hotcode",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "medulla plugin for auto reload pages, styles and scripts",
   "main": "index.es6",
   "dependencies": {
@@ -11,7 +11,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "medulla", "dev-server", "server"
+    "medulla", "dev-server", "hot reload"
   ],
   "author": "Artem Varshavin",
   "license": "MIT",
