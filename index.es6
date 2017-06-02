@@ -66,6 +66,7 @@
 
 		const
 			AUTORELOAD = window.medulla.settings.autoreload || 0,
+			SHOWTRACES = (window.medulla.settings.showtraces === undefined)?true:window.medulla.settings.showtraces,
 			HTMLMAP = {
 				'&': '&amp;',
 				'<': '&lt;',
@@ -116,7 +117,6 @@
 		window.medulla.ws.addEventListener('message', event=>{
 			let msg = event.data;
 
-			console.log(msg);
 			if (msg.startsWith('MEDSIG_MODIFY')) {
 				msg = msg.split('|');
 
@@ -126,6 +126,7 @@
 						if (autoReloadT) clearTimeout(autoReloadT);
 						autoReloadT = setTimeout(restartServer, AUTORELOAD);
 					}
+					if (SHOWTRACES) console.info(`[HOTCODE] "${msg[3]}" is changed and waiting for update.`);
 				}
 				else if (msg[1] === 'forcedUpdate') {
 					if (serverChanged) restartServer();
@@ -133,17 +134,22 @@
 				}
 
 				if (msg[2] === 'application/javascript') {
-					console.log(msg[3]);
 					let el = document.querySelector(`script[src='${msg[3]}']`);
-					let newel = document.createElement('script');
-					newel.src = msg[3];
-					el.replaceWith(newel);
+					if (el) {
+						let newel = document.createElement('script');
+						newel.src = msg[3];
+						el.replaceWith(newel);
+						if (SHOWTRACES) console.info(`[HOTCODE] "${msg[3]}" is changed and updated.`);
+					} else if (SHOWTRACES) console.info(`[HOTCODE] "${msg[3]}" is changed, but this file not used on current page.`);
 				} else if (msg[2] === 'text/css') {
 					let el = document.querySelector(`link[href='${msg[3]}']`);
-					let newel = document.createElement('link');
-					newel.rel="stylesheet";
-					newel.href = msg[3];
-					el.replaceWith(newel);
+					if (el) {
+						let newel = document.createElement('link');
+						newel.rel="stylesheet";
+						newel.href = msg[3];
+						el.replaceWith(newel);
+						if (SHOWTRACES) console.info(`[HOTCODE] "${msg[3]}" is changed and updated.`);
+					} else if (SHOWTRACES) console.info(`[HOTCODE] "${msg[3]}" is changed, but this file not used on current page.`);
 				}
 			} else if (msg === 'MEDSIG_REFRESH') {
 				location.reload();

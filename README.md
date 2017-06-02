@@ -15,12 +15,17 @@ require('medulla')({
     serverApp : "./myApp.js",
     devMode: true, //or use -dev parameter on launch
     devPlugins : {
-        'medulla-hotcode': {autoreload: 0}
+        'medulla-hotcode': {
+            autoreload: 0
+        }
     }
 });
 ```
 - `autoreload: 0`  
 Period in ms between last "lazy reload" file change and automatically page refreshing. If set as '0', then page refresh after "lazy reload" only when cursor will be moved in browser window or if "force reload" file will be changed.
+
+- `showtraces: true`  
+If set true, all changes will display in console.
 
 Set reload param to files/templates from `watchedFiles`
 ```es6
