@@ -85,7 +85,7 @@
 			if (window.medulla.ws.readyState === 1) {
 				window.medulla.ws.send(msg);
 			} else if (wait >= 0) {
-				console.log('wait connection...');
+				//console.log('wait connection...');
 				wait--;
 				setTimeout(sendMessage, 100, msg, wait);
 			}
