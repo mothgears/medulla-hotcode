@@ -88,6 +88,8 @@
 				//console.log('wait connection...');
 				wait--;
 				setTimeout(sendMessage, 100, msg, wait);
+			} else {
+				console.error('Lost connection to server.');
 			}
 		};
 		const restartServer = ()=>{
