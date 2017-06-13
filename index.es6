@@ -130,7 +130,8 @@ module.exports.medullaClient = ()=>{
 			}
 
 			if (msg[2] === 'application/javascript') {
-				let el = document.querySelector(`script[src='${msg[3]}']`);
+				let el = document.querySelector(`script[src='${msg[3]}']`)
+					|| document.querySelector(`script[data-path='${msg[3]}']`);
 				if (el) {
 					let newel = document.createElement('script');
 					newel.src = msg[3];
@@ -138,7 +139,8 @@ module.exports.medullaClient = ()=>{
 					if (SHOWTRACES) console.info(`[HOTCODE] "${msg[3]}" is changed and updated.`);
 				} else if (SHOWTRACES) console.info(`[HOTCODE] "${msg[3]}" is changed, but this file not found on current page.`);
 			} else if (msg[2] === 'text/css') {
-				let el = document.querySelector(`link[href='${msg[3]}']`);
+				let el = document.querySelector(`link[href='${msg[3]}']`)
+					|| document.querySelector(`style[data-path='${msg[3]}']`);
 				if (el) {
 					let newel = document.createElement('link');
 					newel.rel="stylesheet";
