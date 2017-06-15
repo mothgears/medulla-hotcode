@@ -122,7 +122,7 @@ module.exports.medullaClient = ()=>{
 					if (autoReloadT) clearTimeout(autoReloadT);
 					autoReloadT = setTimeout(restartServer, AUTORELOAD);
 				}
-				if (SHOWTRACES) console.info(`[HOTCODE] "${msg[3]}" is changed and waiting for update.`);
+				if (SHOWTRACES) console.info(`%c[HOTCODE] "${msg[3]}" is changed and waiting for update.`, "color: #da0");
 			}
 			else if (msg[1] === 'forcedUpdate') {
 				if (serverChanged) restartServer();
@@ -135,8 +135,8 @@ module.exports.medullaClient = ()=>{
 					let newel = document.createElement('script');
 					newel.src = msg[3];
 					el.replaceWith(newel);
-					if (SHOWTRACES) console.info(`[HOTCODE] "${msg[3]}" is changed and updated.`);
-				} else if (SHOWTRACES) console.info(`[HOTCODE] "${msg[3]}" is changed, but this file not found on current page.`);
+					if (SHOWTRACES) console.info(`%c[HOTCODE] "${msg[3]}" is changed and updated.`, "color: #6b0");
+				} else if (SHOWTRACES) console.info(`%c[HOTCODE] "${msg[3]}" is changed, but this file not found on current page.`, "color: #c99");
 			} else if (msg[2] === 'text/css') {
 				let el = document.querySelector(`link[href='${msg[3]}']`);
 				if (el) {
@@ -144,8 +144,8 @@ module.exports.medullaClient = ()=>{
 					newel.rel="stylesheet";
 					newel.href = msg[3];
 					el.replaceWith(newel);
-					if (SHOWTRACES) console.info(`[HOTCODE] "${msg[3]}" is changed and updated.`);
-				} else if (SHOWTRACES) console.info(`[HOTCODE] "${msg[3]}" is changed, but this file not found on current page.`);
+					if (SHOWTRACES) console.info(`%c[HOTCODE] "${msg[3]}" is changed and updated.`, "color: #6b0");
+				} else if (SHOWTRACES) console.info(`%c[HOTCODE] "${msg[3]}" is changed, but this file not found on current page.`, "color: #c99");
 			}
 		} else if (msg === 'MEDSIG_REFRESH') {
 			location.reload();
