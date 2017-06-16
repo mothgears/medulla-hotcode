@@ -30,9 +30,9 @@ If set true, all changes will display in console.
 Set reload param to files/templates from `watchedFiles`
 ```es6
 module.exports.watchedFiles = {
-    "styles/main.css"   : {reload:"hot", type:"cached"}, //hot reload
-    "scripts/*.js"      : {type:"cached", src:"bin/*.js"}, //lazy reload
-    "client-script.es6" : {reload:"force", type:"cached", src:"bin/client-script.es6"} //force reload
+    "styles/main.css"       : {reload:"hot"}, //hot reload
+    "bin/*.js"              : {url:"scripts/*.js" }, //lazy reload
+    "bin/client-script.es6" : {reload:"force", url:"client-script.es6"} //force reload
 };
 ```
 - `reload: "lazy"`  
@@ -52,8 +52,8 @@ Set medulla as proxy
 const APPDIR = "/srv/www/myapp.loc/code/"; //Path to your project code dir
 const myProxy = module_exports=>{
     module_exports.watchedFiles = {
-        "~*.js"           : {src:APPDIR+"~*.js", reload:"force"},
-        "~*.css"          : {src:APPDIR+"~*.css", reload:"hot"},
+        [APPDIR+"~*.js"]  : {url:"~*.js" , reload:"force"},
+        [APPDIR+"~*.css"] : {url:"~*.css", reload:"hot"},
         [APPDIR+"~*.php"] : {type:"serverside"},
     };
 

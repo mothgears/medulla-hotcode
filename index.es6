@@ -1,6 +1,6 @@
 //SERVER
 //----------------------------------------------------------------------------------------------------------------------
-module.exports.medullaMaster = (io)=>{
+module.exports.medullaMaster = io=>{
 	let restart = null;
 	let error   = null;
 
