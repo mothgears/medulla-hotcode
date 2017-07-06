@@ -35,11 +35,13 @@ module.exports.medullaMaster = io=>{
 
 		ws.on('message', msg=>{
 			if (msg === 'MEDSIG_RESTART') {
-				if (restart) restart(()=>{
-					let cids = Object.keys(medulla.wsClients);
-					for (let id of cids) medulla.wsClients[id].send('MEDSIG_REFRESH');
-				});
-				else {
+				if (restart) {
+					restart(()=>{
+						let cids = Object.keys(medulla.wsClients);
+						for (let id of cids) medulla.wsClients[id].send('MEDSIG_REFRESH');
+					});
+					restart = null;
+				} else {
 					let cids = Object.keys(medulla.wsClients);
 					for (let id of cids) medulla.wsClients[id].send('MEDSIG_REFRESH');
 				}
