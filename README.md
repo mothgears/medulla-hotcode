@@ -4,14 +4,15 @@ Also, you may using it with apache / nginx or other third-party servers, just se
 
 ## Installation
 As [npm](https://www.npmjs.com/package/medulla-hotcode) package  
-`npm i -S medulla-hotcode`
+`npm install --save-dev medulla-hotcode`
 
 ## Usage
 Create and configure a [medulla server](https://www.npmjs.com/package/medulla) app.
 
 Include plugin:
 ```es6
-require('medulla')({
+const medulla = require('medulla');
+medulla.launch({
     serverApp : "./myApp.js",
     devMode: true, //or use -dev parameter on launch
     devPlugins : {
@@ -29,7 +30,7 @@ If set true, all changes will display in console.
 
 Set reload param to files/templates from `watchedFiles`
 ```es6
-module.exports.watchedFiles = {
+module.exports.fileSystem = {
     "styles/main.css"       : {reload:"hot"}, //hot reload
     "bin/*.js"              : {url:"scripts/*.js" }, //lazy reload
     "bin/client-script.es6" : {reload:"force", url:"client-script.es6"} //force reload
@@ -45,40 +46,24 @@ Set this value for file (css or js script) so that it reloaded without refreshin
 - `reload: "force"`  
 Page will reload immediately when file changed.
 
-## Usage as proxy dev-server
-Set medulla as proxy
-
+Add files on page 
 ```es6
-const APPDIR = "/srv/www/myapp.loc/code/"; //Path to your project code dir
-const myProxy = module_exports=>{
-    module_exports.watchedFiles = {
-        [APPDIR+"~*.js"]  : {url:"~*.js" , reload:"force"},
-        [APPDIR+"~*.css"] : {url:"~*.css", reload:"hot"},
-        [APPDIR+"~*.php"] : {type:"serverside"},
-    };
+//myApp.js
 
-    //for detecting pages
-    const testPage = url=>{
-        return url === '/' || url.endsWith('.html');
-    };
-
-    module_exports.onRequest = (request, response)=>{
-        return {target:"myapp.loc", isPage:testPage(request.url)};
-    };
+module.exports.onRequest = io=>{
+    if (io.url !== '/') io.send(404);
+    else                io.send('
+    <html>
+        <head>
+            <link href="styles/main.css" rel="stylesheet">
+            <script src="client-script.es6"></script>
+            <script src="scripts/hello.js"></script>
+        </head>
+        <body>Hello World!</body>
+    </html>
+    ');
 };
 
-require('medulla')({
-    port: 3000,
-    serverApp: myProxy,
-    devMode: true,
-    platforms: {
-        "win32": {forcewatch: false},
-        "linux": {forcewatch: true}
-    },
-    devPlugins: {
-        "medulla-hotcode": {autoreload: 0}
-    }
-});
 ```
 
 ## License
