@@ -28,7 +28,7 @@ Period in ms between last "lazy reload" file change and automatically page refre
 - `showtraces: true`  
 If set true, all changes will display in console.
 
-Set reload param to files/templates from `watchedFiles`
+Set reload param to files/templates from `fileSystem`
 ```es6
 module.exports.fileSystem = {
     "styles/main.css"       : {reload:"hot"}, //hot reload
