@@ -3,7 +3,7 @@
 module.exports.medullaMaster = io=>{
 	let restart = null;
 	let error   = null;
-	const codeStorage = {};
+	//const codeStorage = {};
 
 	const sendError = err=>{
 		if (err) {
@@ -28,11 +28,11 @@ module.exports.medullaMaster = io=>{
 		else                         updtype = 'noUpdate';
 
 		let surl = (fp.url?fp.url:fid);
-		let oldv = codeStorage[surl];
+		/*let oldv = codeStorage[surl];*/
 
-		let vcode = codeStorage[surl] = Math.random().toFixed(5);
-		let nurl = surl+'?'+vcode;
-		if (oldv) surl = surl+'?'+oldv;
+		//let vcode = /*codeStorage[surl] =*/ Math.random().toFixed(5);
+		let nurl = surl+'?'+Math.random().toFixed(5);
+		//if (oldv) surl = surl+'?'+oldv;
 
 		let cids = Object.keys(medulla.wsClients);
 		for (let id of cids)
@@ -141,18 +141,22 @@ module.exports.medullaClient = ()=>{
 
 			if (msg[2] === 'application/javascript') {
 				let el = document.querySelector(`script[src='${msg[3]}']`);
+				if (!el) el = document.querySelector(`script[data-hotcode='${msg[3]}']`);
 				if (el) {
 					let newel = document.createElement('script');
 					newel.src = msg[4];
+					newel.dataset.hotcode = msg[3];
 					el.replaceWith(newel);
 					if (SHOWTRACES) console.info(`%c[HOTCODE] "${msg[3]}" is changed and updated.`, "color: #6b0");
 				} else if (SHOWTRACES) console.info(`%c[HOTCODE] "${msg[3]}" is changed, but this file not found on current page.`, "color: #c99");
 			} else if (msg[2] === 'text/css') {
 				let el = document.querySelector(`link[href='${msg[3]}']`);
+				if (!el) el = document.querySelector(`link[data-hotcode='${msg[3]}']`);
 				if (el) {
 					let newel = document.createElement('link');
 					newel.rel="stylesheet";
 					newel.href = msg[4];
+					newel.dataset.hotcode = msg[3];
 					el.replaceWith(newel);
 					if (SHOWTRACES) console.info(`%c[HOTCODE] "${msg[3]}" is changed and updated.`, "color: #6b0");
 				} else if (SHOWTRACES) console.info(`%c[HOTCODE] "${msg[3]}" is changed, but this file not found on current page.`, "color: #c99");
